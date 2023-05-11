@@ -15,7 +15,7 @@ def initGpio():
     spiBus = 0
     spiDevice = 1
     spiMode = 0
-    spiFrequency = 500000
+    spiFrequency = 10000000
 
     spi = spidev.SpiDev()
     spi.open(spiBus, spiDevice)
@@ -34,11 +34,14 @@ def displayLightIndex(spi, idx):
     myBytes[idx >> 3] = 1 << (idx % 8)
     driveBytes(spi, myBytes)
 
+def getIndex(x, y):
+    return (y & 0x7) + ((~y >> 3) << 7) + ((15-x) << 3)
+
 spi = initGpio()
 pwm = GPIO.PWM(32, 10000)
 pwm.start(50)
 while True:
-    print("StartSequence")
-    for i in range(255):
-        displayLightIndex(spi, i)
-        time.sleep(0.05)
+    for y in range(16):
+        for x in range(16):
+            displayLightIndex(spi, getIndex(x, y))
+            time.sleep(0.05)
