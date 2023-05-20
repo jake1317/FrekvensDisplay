@@ -1,0 +1,5 @@
+{
+    "_comments": "This image library is for 16x16 dot displays.  Index 0 is the bottom row, and each row is a bitset where the LSB is the leftmost column",
+    "smiley": [2016, 2064, 4104, 9156, 17442, 34833, 36873, 32769, 32769, 32769, 35889, 19506, 8196, 4104, 2064, 2016],
+    "cat": [0, 16386, 12276, 36873, 26646, 26022, 20874, 16386, 8196, 5736, 4104, 8196, 20466, 20490, 24582, 0]
+}
