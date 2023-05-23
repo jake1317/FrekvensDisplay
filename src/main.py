@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+import json
 import spidev
 
 pinOe = 32
@@ -19,7 +20,7 @@ def initGpio():
 
     spi = spidev.SpiDev()
     spi.open(spiBus, spiDevice)
-    
+
     spi.max_speed_hz = spiFrequency
     spi.mode = spiMode
     return spi
@@ -37,9 +38,27 @@ def displayLightIndex(spi, idx):
 def getIndex(x, y):
     return (y & 0x7) + ((~y >> 3) << 7) + ((15-x) << 3)
 
+def cartesianToBytes(cartesian):
+    myBytes = [0 for i in range(32)]
+    for y in range(len(cartesian)):
+        for x in range(len(cartesian)):
+            if (cartesian[y] >> x) & 0x1:
+                idx = getIndex(x, y)
+                myBytes[idx >> 3] = 1 << (idx % 8)
+    return myBytes
+
+def driveCartesian(spi, cartesian):
+    driveBytes(spi, cartesianToBytes(cartesian))
+
+f = open('library.json')
+library = json.load(f)
 spi = initGpio()
 pwm = GPIO.PWM(32, 10000)
 pwm.start(50)
+
+driveCartesian(spi, library["smiley"])
+time.sleep(10)
+
 while True:
     for y in range(16):
         for x in range(16):
