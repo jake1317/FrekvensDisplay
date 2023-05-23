@@ -44,7 +44,7 @@ def cartesianToBytes(cartesian):
         for x in range(len(cartesian)):
             if (cartesian[y] >> x) & 0x1:
                 idx = getIndex(x, y)
-                myBytes[idx >> 3] = 1 << (idx % 8)
+                myBytes[idx >> 3] = myBytes[idx >> 3] | (1 << (idx % 8))
     return myBytes
 
 def driveCartesian(spi, cartesian):
@@ -54,13 +54,16 @@ f = open('library.json')
 library = json.load(f)
 spi = initGpio()
 pwm = GPIO.PWM(32, 10000)
-pwm.start(50)
+pwm.start(10)
 
-driveCartesian(spi, library["smiley"])
-time.sleep(10)
+while True:
+    driveCartesian(spi, library["smiley"])
+    time.sleep(5)
+    driveCartesian(spi, library["cat"])
+    time.sleep(3)
 
 while True:
     for y in range(16):
         for x in range(16):
             displayLightIndex(spi, getIndex(x, y))
-            time.sleep(0.05)
+            time.sleep(0.15)
