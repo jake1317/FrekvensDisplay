@@ -1,17 +1,14 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton, QCheckBox, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton, QCheckBox, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QSpacerItem
 from PyQt5.QtCore import Qt
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-
         self.xDim = 16
         self.yDim = 16
         self.paintMode = False
         self.eraseMode = False
         self.dragging = False
-
-        self.setWindowTitle("Frekvens Visualizer")
 
         self.mainLayout = QVBoxLayout()
 
@@ -21,10 +18,11 @@ class MainWindow(QMainWindow):
 
         mainWidget = QWidget()
         mainWidget.setLayout(self.mainLayout)
-
         self.setCentralWidget(mainWidget)
+        self.setWindowTitle("Frekvens Visualizer")
 
     def initGrid(self):
+        hbox = QHBoxLayout()
         grid = QGridLayout()
 
         self.theCheckBoxes = [[QCheckBox() for y in range(self.yDim)] for x in range(self.xDim)]
@@ -38,8 +36,14 @@ class MainWindow(QMainWindow):
 
         gridWidget = QWidget()
         gridWidget.setLayout(grid)
+        spacing = max((17 - self.xDim) * 7, 0)
+        hbox.addSpacing(spacing)
+        hbox.addWidget(gridWidget)
+        hbox.addSpacing(spacing)
+        hboxWidget = QWidget()
+        hboxWidget.setLayout(hbox)
 
-        self.mainLayout.addWidget(gridWidget)
+        self.mainLayout.addWidget(hboxWidget)
 
     def onEnter(self, int, x, y):
         if self.dragging:
