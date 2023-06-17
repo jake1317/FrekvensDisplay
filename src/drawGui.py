@@ -25,14 +25,14 @@ class MainWindow(QMainWindow):
         hbox = QHBoxLayout()
         grid = QGridLayout()
 
-        self.theCheckBoxes = [[QCheckBox() for y in range(self.yDim)] for x in range(self.xDim)]
-        self.theCheckBoxValues = [[False for y in range(self.yDim)] for x in range(self.xDim)]
+        self.theCheckBoxes = [[QCheckBox() for x in range(self.xDim)] for y in range(self.yDim)]
+        self.theCheckBoxValues = [[False for x in range(self.xDim)] for y in range(self.yDim)]
         for y in range(self.yDim):
             for x in range(self.xDim):
-                grid.addWidget(self.theCheckBoxes[x][y], (self.xDim-1-x), y)
-                self.theCheckBoxes[x][y].stateChanged.connect(lambda i, x=x, y=y: self.boxChanged(i, x, y))
-                self.theCheckBoxes[x][y].enterEvent = lambda i, x=x, y=y: self.onEnter(i, x, y)
-                self.theCheckBoxes[x][y].mousePressEvent = lambda i, x=x, y=y: self.onPressed(i, x, y)
+                grid.addWidget(self.theCheckBoxes[y][x], (self.yDim-1-y), x)
+                self.theCheckBoxes[y][x].stateChanged.connect(lambda i, x=x, y=y: self.boxChanged(i, x, y))
+                self.theCheckBoxes[y][x].enterEvent = lambda i, x=x, y=y: self.onEnter(i, x, y)
+                self.theCheckBoxes[y][x].mousePressEvent = lambda i, x=x, y=y: self.onPressed(i, x, y)
 
         gridWidget = QWidget()
         gridWidget.setLayout(grid)
@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
                 self.setCheckBox(x, y, False)
 
     def onPressed(self, int, x, y):
-        newState = not self.theCheckBoxes[x][y].isChecked()
+        newState = not self.theCheckBoxes[y][x].isChecked()
         if self.dragging:
             if self.paintMode:
                 newState = True
@@ -132,7 +132,7 @@ class MainWindow(QMainWindow):
         for y in range(self.yDim):
             row = myList[y]
             for x in range(self.xDim):
-                self.setCheckBox(y, x, row & 0x1)
+                self.setCheckBox(x, y, row & 0x1)
                 row = row >> 1
 
     def boxChanged(self, int, x, y):
@@ -141,7 +141,7 @@ class MainWindow(QMainWindow):
                 self.setCheckBox(x, y, True)
             elif self.eraseMode:
                 self.setCheckBox(x, y, False)
-        self.theCheckBoxValues[x][y] = self.theCheckBoxes[x][y].isChecked()
+        self.theCheckBoxValues[y][x] = self.theCheckBoxes[y][x].isChecked()
 
     def clearAll(self, int):
         for y in range(self.yDim):
@@ -154,8 +154,8 @@ class MainWindow(QMainWindow):
                 self.setCheckBox(x,y,True)
 
     def setCheckBox(self, x, y, value):
-        self.theCheckBoxes[x][y].setChecked(value)
-        self.theCheckBoxValues[x][y] = value
+        self.theCheckBoxes[y][x].setChecked(value)
+        self.theCheckBoxValues[y][x] = value
 
 app = QApplication([])
 window = MainWindow()
