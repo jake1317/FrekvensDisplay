@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
 
         gridWidget = QWidget()
         gridWidget.setLayout(grid)
-        spacing = max((17 - self.xDim) * 7, 0)
+        spacing = max((17 - self.xDim) * 10, 0)
         hbox.addSpacing(spacing)
         hbox.addWidget(gridWidget)
         hbox.addSpacing(spacing)
