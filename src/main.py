@@ -57,9 +57,9 @@ pwm = GPIO.PWM(32, 10000)
 pwm.start(10)
 
 while True:
-    driveCartesian(spi, library["smiley"])
+    driveCartesian(spi, library["misc_images"]["smiley"])
     time.sleep(5)
-    driveCartesian(spi, library["cat"])
+    driveCartesian(spi, library["misc_images"]["cat"])
     time.sleep(3)
 
 while True:
