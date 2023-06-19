@@ -1,11 +1,12 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QPushButton, QCheckBox, QGridLayout, QVBoxLayout, QHBoxLayout, QLineEdit, QSpacerItem
 from PyQt5.QtCore import Qt
+import sys
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, xDim, yDim):
         super().__init__()
-        self.xDim = 16
-        self.yDim = 16
+        self.xDim = xDim
+        self.yDim = yDim
         self.paintMode = False
         self.eraseMode = False
         self.dragging = False
@@ -157,7 +158,12 @@ class MainWindow(QMainWindow):
         self.theCheckBoxes[y][x].setChecked(value)
         self.theCheckBoxValues[y][x] = value
 
+xDim = 16
+yDim = 16
+if (len(sys.argv) >= 3):
+    xDim = int(sys.argv[1])
+    yDim = int(sys.argv[2])
 app = QApplication([])
-window = MainWindow()
+window = MainWindow(xDim, yDim)
 window.show()
 app.exec()

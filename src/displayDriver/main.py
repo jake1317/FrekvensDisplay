@@ -50,7 +50,7 @@ def cartesianToBytes(cartesian):
 def driveCartesian(spi, cartesian):
     driveBytes(spi, cartesianToBytes(cartesian))
 
-f = open('library.json')
+f = open('../library.json')
 library = json.load(f)
 spi = initGpio()
 pwm = GPIO.PWM(32, 10000)
